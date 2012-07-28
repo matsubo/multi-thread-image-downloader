@@ -9,7 +9,7 @@ task = []
 
 # number of list pges to download
 min_page = 1
-max_page = 3
+max_page = 60
 min_page.upto(max_page) { |i| task << i }
 
 # number of concurrency
