@@ -45,4 +45,8 @@ W, [2012-07-28T14:48:13.245188 #2091]  WARN -- : File already exists
 I, [2012-07-28T14:48:13.245330 #2091]  INFO -- : http://up.pandoravote.net/up/img/pandoraup00137763.jpg
 </pre>
 
+RSS output
+-----------------
+I created converter for RSS a few years ago.
+http://matsu.teraren.com/fire/
 
