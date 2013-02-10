@@ -1,14 +1,10 @@
-#!/usr/bin/env bash
-LOCKFILE=/tmp/scraper
+#!/bin/zsh
 
-lockfile -r0 $LOCKFILE
-
-# load rvm ruby
 source /Users/matsu/.rvm/scripts/rvm
 
-#bundle install
-ruby /Users/matsu/fire/scraping.rb
-#rake do something
+cd /Users/matsu/fire
+
+ruby main.rb
 
 
-rm $LOCKFILE
+
