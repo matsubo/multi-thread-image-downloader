@@ -24,8 +24,8 @@ threads = []
             break if task.count() == 0
             begin
                 page = task.pop()
-                downloader = Downloader.new({ :proxy => 'http://212.90.161.214:3128/', :logger => logger })
-                #downloader = Downloader.new({ :logger => logger })
+                #downloader = Downloader.new({ :proxy => 'http://212.90.161.214:3128/', :logger => logger })
+                downloader = Downloader.new({ :logger => logger })
                 downloader.parseList(page)
             rescue RuntimeError => e
                 logger.warn e.to_s
