@@ -36,6 +36,6 @@ threads = []
 }
 
 
-threads.each{|t| t.join }
+(Thread.list - [Thread.current]).each &:join
 
 
