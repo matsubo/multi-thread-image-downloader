@@ -13,7 +13,7 @@ Installation
 Execute
 ---------------
 <pre>
-% ruby main.rb
+% bundle exec ruby main.rb
 </pre>
 
 
@@ -22,7 +22,7 @@ Sample output
 ---------------
 
 <pre>
-% ruby main.rb
+% bundle exec ruby main.rb
 I, [2012-07-28T14:48:11.471499 #2091]  INFO -- : http://up.pandoravote.net/up/index.php?page=3&gal=1&mode=list&sword=&andor=
 I, [2012-07-28T14:48:11.572504 #2091]  INFO -- : http://up.pandoravote.net/up/index.php?page=2&gal=1&mode=list&sword=&andor=
 I, [2012-07-28T14:48:11.676532 #2091]  INFO -- : http://up.pandoravote.net/up/index.php?page=1&gal=1&mode=list&sword=&andor=

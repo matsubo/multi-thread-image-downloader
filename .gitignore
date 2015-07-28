@@ -1,2 +1,4 @@
 images/*
 tmp/*
+/vendor
+/.bundle

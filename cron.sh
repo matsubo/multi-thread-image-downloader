@@ -6,7 +6,7 @@ eval "$(rbenv init -)"
 
 cd /Users/matsu/fire
 
-ruby main.rb
+bundle exec ruby main.rb
 
 
 
