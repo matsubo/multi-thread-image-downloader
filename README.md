@@ -48,5 +48,5 @@ I, [2012-07-28T14:48:13.245330 #2091]  INFO -- : http://up.pandoravote.net/up/im
 RSS output
 -----------------
 I created converter for RSS a few years ago.
-http://matsu.teraren.com/fire/
+https://matsu.teraren.com/fire/
 
