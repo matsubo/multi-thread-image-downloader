@@ -1,6 +1,7 @@
-require "bundler/setup"
-Bundler.require
+# frozen_string_literal: true
 
+require 'bundler/setup'
+Bundler.require
 
 require 'open-uri'
 require 'tempfile'
@@ -21,10 +22,10 @@ class Downloader
   attr_reader :logger
 
   # sleep after download a file.
-  @@WAIT_TIME = 1
+  WAIT_TIME = 1
 
   # count of fail over
-  @@MAX_FAILURE_COUNT = 5
+  MAX_FAILURE_COUNT = 5
 
   #
   # constructor
@@ -39,7 +40,7 @@ class Downloader
   #
   # parse the list page
   #
-  def parseList(page = 1)
+  def parse_list(page = 1)
     url = format('http://up.pandoravote.net/up/index.php?page=%d&gal=1&mode=list&sword=&andor=', page)
 
     logger.info url
@@ -49,7 +50,7 @@ class Downloader
       id = link.get_attribute('href').gsub!(/\D/, '')
 
       # comment out to parse the single page and find download link.
-      #      self.parsePage(id)
+      #      self.parse_page(id)
       download('http://up.pandoravote.net/up/img/pandoraup' + id + '.jpg')
     end
   end
@@ -57,7 +58,7 @@ class Downloader
   #
   # parse the single download page
   #
-  def parsePage(id = '00136024')
+  def parse_page(id = '00136024')
     url = format('http://up.pandoravote.net/up/index.php?id=%s', id)
 
     logger.info url
@@ -76,7 +77,7 @@ class Downloader
         download(path)
       end
     end
-    sleep @@WAIT_TIME
+    sleep WAIT_TIME
   end
 
   #
@@ -84,7 +85,7 @@ class Downloader
   #
   def download(url = 'http://up.pandoravote.net/up/img/pandoraup00136024.jpg')
     # fail over
-    raise 'Max failure count is exceeded.' if @@MAX_FAILURE_COUNT <= @fail_count
+    raise 'Max failure count is exceeded.' if MAX_FAILURE_COUNT <= @fail_count
 
     logger.info url
 
@@ -97,7 +98,7 @@ class Downloader
 
       extension = File.extname(url)
 
-      destination = @output + '/' + fileToPath(Digest::MD5.file(temp.path).hexdigest) + extension
+      destination = @output + '/' + file_to_path(Digest::MD5.file(temp.path).hexdigest) + extension
 
       # directory check
       unless File.directory?(File.dirname(destination))
@@ -127,7 +128,7 @@ class Downloader
   #
   # Return file path corersponding to the file name.
   #
-  def fileToPath(path = '86583c72275a8ca9214af5a0e4356a7f')
+  def file_to_path(path = '86583c72275a8ca9214af5a0e4356a7f')
     path.insert(2, File::SEPARATOR)
   end
 end
