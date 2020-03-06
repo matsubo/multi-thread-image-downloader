@@ -17,6 +17,7 @@ require 'logger'
 # License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/
 #
 #== Histroy
+# - 2020-03-6 Rubocop Fixed
 # - 2012-07-28 Created
 class Downloader
   attr_reader :logger

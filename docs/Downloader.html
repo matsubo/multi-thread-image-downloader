@@ -11,8 +11,11 @@
   var index_rel_prefix = "./";
 </script>
 
-<script src="./js/jquery.js"></script>
-<script src="./js/darkfish.js"></script>
+<script src="./js/navigation.js" defer></script>
+<script src="./js/search.js" defer></script>
+<script src="./js/search_index.js" defer></script>
+<script src="./js/searcher.js" defer></script>
+<script src="./js/darkfish.js" defer></script>
 
 <link href="./css/fonts.css" rel="stylesheet">
 <link href="./css/rdoc.css" rel="stylesheet">
@@ -85,11 +88,11 @@
     
     <li ><a href="#method-i-download">#download</a>
     
-    <li ><a href="#method-i-fileToPath">#fileToPath</a>
+    <li ><a href="#method-i-file_to_path">#file_to_path</a>
     
-    <li ><a href="#method-i-parseList">#parseList</a>
+    <li ><a href="#method-i-parse_list">#parse_list</a>
     
-    <li ><a href="#method-i-parsePage">#parsePage</a>
+    <li ><a href="#method-i-parse_page">#parse_page</a>
     
   </ul>
 </div>
@@ -123,6 +126,25 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
 
     
 
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="MAX_FAILURE_COUNT">MAX_FAILURE_COUNT
+        
+        <dd><p>count of fail over</p>
+        
+      
+        <dt id="WAIT_TIME">WAIT_TIME
+        
+        <dd><p>sleep after download a file.</p>
+        
+      
+      </dl>
+    </section>
     
 
     
@@ -174,7 +196,7 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File Downloader.rb, line 32</span>
+            <pre><span class="ruby-comment"># File downloader.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">params</span>)
   <span class="ruby-ivar">@open_params</span> = { <span class="ruby-value">:proxy</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:proxy</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword">nil</span>, <span class="ruby-string">&#39;User-Agent&#39;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;Mozilla/5.0 (iPad; U; CPU OS 4_3_5 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8L1 Safari/6533.18.5&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">nil</span> }
   <span class="ruby-ivar">@fail_count</span> = <span class="ruby-value">0</span>
@@ -218,10 +240,10 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
 
           
           <div class="method-source-code" id="download-source">
-            <pre><span class="ruby-comment"># File Downloader.rb, line 85</span>
+            <pre><span class="ruby-comment"># File downloader.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">download</span>(<span class="ruby-identifier">url</span> = <span class="ruby-string">&#39;http://up.pandoravote.net/up/img/pandoraup00136024.jpg&#39;</span>)
   <span class="ruby-comment"># fail over</span>
-  <span class="ruby-identifier">raise</span> <span class="ruby-string">&#39;Max failure count is exceeded.&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">@@MAX_FAILURE_COUNT</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-ivar">@fail_count</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-string">&#39;Max failure count is exceeded.&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">MAX_FAILURE_COUNT</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-ivar">@fail_count</span>
 
   <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-identifier">url</span>
 
@@ -234,7 +256,7 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
 
     <span class="ruby-identifier">extension</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">extname</span>(<span class="ruby-identifier">url</span>)
 
-    <span class="ruby-identifier">destination</span> = <span class="ruby-ivar">@output</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">fileToPath</span>(<span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">MD5</span>.<span class="ruby-identifier">file</span>(<span class="ruby-identifier">temp</span>.<span class="ruby-identifier">path</span>).<span class="ruby-identifier">hexdigest</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">extension</span>
+    <span class="ruby-identifier">destination</span> = <span class="ruby-ivar">@output</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">file_to_path</span>(<span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">MD5</span>.<span class="ruby-identifier">file</span>(<span class="ruby-identifier">temp</span>.<span class="ruby-identifier">path</span>).<span class="ruby-identifier">hexdigest</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">extension</span>
 
     <span class="ruby-comment"># directory check</span>
     <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">destination</span>))
@@ -270,10 +292,10 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
       </div>
 
     
-      <div id="method-i-fileToPath" class="method-detail ">
+      <div id="method-i-file_to_path" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">fileToPath</span><span
+          <span class="method-name">file_to_path</span><span
             class="method-args">(path = &#39;86583c72275a8ca9214af5a0e4356a7f&#39;)</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -288,9 +310,9 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
           
 
           
-          <div class="method-source-code" id="fileToPath-source">
-            <pre><span class="ruby-comment"># File Downloader.rb, line 130</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">fileToPath</span>(<span class="ruby-identifier">path</span> = <span class="ruby-string">&#39;86583c72275a8ca9214af5a0e4356a7f&#39;</span>)
+          <div class="method-source-code" id="file_to_path-source">
+            <pre><span class="ruby-comment"># File downloader.rb, line 131</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">file_to_path</span>(<span class="ruby-identifier">path</span> = <span class="ruby-string">&#39;86583c72275a8ca9214af5a0e4356a7f&#39;</span>)
   <span class="ruby-identifier">path</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-value">2</span>, <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">SEPARATOR</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -303,10 +325,10 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
       </div>
 
     
-      <div id="method-i-parseList" class="method-detail ">
+      <div id="method-i-parse_list" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">parseList</span><span
+          <span class="method-name">parse_list</span><span
             class="method-args">(page = 1)</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -321,9 +343,9 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
           
 
           
-          <div class="method-source-code" id="parseList-source">
-            <pre><span class="ruby-comment"># File Downloader.rb, line 42</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">parseList</span>(<span class="ruby-identifier">page</span> = <span class="ruby-value">1</span>)
+          <div class="method-source-code" id="parse_list-source">
+            <pre><span class="ruby-comment"># File downloader.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">parse_list</span>(<span class="ruby-identifier">page</span> = <span class="ruby-value">1</span>)
   <span class="ruby-identifier">url</span> = <span class="ruby-identifier">format</span>(<span class="ruby-string">&#39;http://up.pandoravote.net/up/index.php?page=%d&amp;gal=1&amp;mode=list&amp;sword=&amp;andor=&#39;</span>, <span class="ruby-identifier">page</span>)
 
   <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-identifier">url</span>
@@ -333,7 +355,7 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
     <span class="ruby-identifier">id</span> = <span class="ruby-identifier">link</span>.<span class="ruby-identifier">get_attribute</span>(<span class="ruby-string">&#39;href&#39;</span>).<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/\D/</span>, <span class="ruby-string">&#39;&#39;</span>)
 
     <span class="ruby-comment"># comment out to parse the single page and find download link.</span>
-    <span class="ruby-comment">#      self.parsePage(id)</span>
+    <span class="ruby-comment">#      self.parse_page(id)</span>
     <span class="ruby-identifier">download</span>(<span class="ruby-string">&#39;http://up.pandoravote.net/up/img/pandoraup&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">id</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;.jpg&#39;</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -347,10 +369,10 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
       </div>
 
     
-      <div id="method-i-parsePage" class="method-detail ">
+      <div id="method-i-parse_page" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">parsePage</span><span
+          <span class="method-name">parse_page</span><span
             class="method-args">(id = &#39;00136024&#39;)</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -365,9 +387,9 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
           
 
           
-          <div class="method-source-code" id="parsePage-source">
-            <pre><span class="ruby-comment"># File Downloader.rb, line 60</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">parsePage</span>(<span class="ruby-identifier">id</span> = <span class="ruby-string">&#39;00136024&#39;</span>)
+          <div class="method-source-code" id="parse_page-source">
+            <pre><span class="ruby-comment"># File downloader.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">parse_page</span>(<span class="ruby-identifier">id</span> = <span class="ruby-string">&#39;00136024&#39;</span>)
   <span class="ruby-identifier">url</span> = <span class="ruby-identifier">format</span>(<span class="ruby-string">&#39;http://up.pandoravote.net/up/index.php?id=%s&#39;</span>, <span class="ruby-identifier">id</span>)
 
   <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-identifier">url</span>
@@ -386,7 +408,7 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
       <span class="ruby-identifier">download</span>(<span class="ruby-identifier">path</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">sleep</span> <span class="ruby-identifier">@@WAIT_TIME</span>
+  <span class="ruby-identifier">sleep</span> <span class="ruby-constant">WAIT_TIME</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -407,7 +429,7 @@ License::   CC BY-ND 2.1 http://creativecommons.org/licenses/by-nd/2.1/jp/</pre>
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="https://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.1.
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

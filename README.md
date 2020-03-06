@@ -49,7 +49,7 @@ Generating rdoc
 ----------------
 
 ```
-% rdoc -o docs Downloader.rb
+% rdoc -o docs downloader.rb
 ```
 
 RSS output
