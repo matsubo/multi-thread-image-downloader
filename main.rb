@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'logger'
-require './Downloader'
+require './downloader'
 #
 #= Image downloader main script
 #
@@ -28,7 +28,7 @@ threads = []
         page = task.pop
         # downloader = Downloader.new({ :proxy => 'http://212.90.161.214:3128/', :logger => logger })
         downloader = Downloader.new(logger: logger)
-        downloader.parseList(page)
+        downloader.parse_list(page)
       rescue RuntimeError => e
         logger.warn e.to_s
       end
