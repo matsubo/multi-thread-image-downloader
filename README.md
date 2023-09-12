@@ -52,8 +52,3 @@ Generating rdoc
 % rdoc -o docs downloader.rb
 ```
 
-RSS output
------------------
-I created converter for RSS a few years ago.
-https://matsu.teraren.com/fire/
-
